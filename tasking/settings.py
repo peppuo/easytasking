@@ -30,7 +30,9 @@ else:
     DEBUG = False
 
 
-ALLOWED_HOSTS = ['8080-b12f6158-7641-463e-910d-03093eba3b5e.ws-eu01.gitpod.io',
+ALLOWED_HOSTS = [
+    '8080-b12f6158-7641-463e-910d-03093eba3b5e.ws-eu01.gitpod.io',
+    'fsfd-tasking.herokuapp.com',
 ]
 
 
