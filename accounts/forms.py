@@ -7,7 +7,7 @@ from django.core.exceptions import ValidationError
 class UserLoginForm(forms.Form):
     """Form to log users in"""
 
-    username = forms.CharField()
+    username_or_email = forms.CharField()
     password = forms.CharField(widget=forms.PasswordInput)
 
 
@@ -21,7 +21,7 @@ class UserRegistrationForm(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ['email', 'username', 'password1', 'password2']
+        fields = ['username', 'email', 'password1', 'password2', ]
 
     def clean_email(self):
         email = self.cleaned_data.get('email')

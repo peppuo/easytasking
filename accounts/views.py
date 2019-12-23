@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, reverse
 from django.contrib import auth, messages
 # from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
+from django.contrib.auth.models import Group, User
 from accounts.forms import UserLoginForm, UserRegistrationForm
 
 
@@ -25,8 +25,8 @@ def login(request):
         login_form = UserLoginForm(request.POST)
 
         if login_form.is_valid():
-            user = auth.authenticate(username=request.POST['username'],
-                                     password=request.POST['password'])
+            user = auth.authenticate(username=request.POST.get('username'),
+                                     password=request.POST.get('password'))
             if user:
                 auth.login(user=user, request=request)
                 messages.success(request, 'You are logged in!')
@@ -54,6 +54,9 @@ def registration(request):
                                      password=request.POST['password1'])
             if user:
                 auth.login(user=user, request=request)
+                # Add user to free_account permissions group
+                free_account_group = Group.objects.get(name='free_account')
+                free_account_group.user_set.add(user)
                 messages.success(request, 'You are registered')
                 return redirect(reverse('index'))
             else:
