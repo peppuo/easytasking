@@ -61,7 +61,7 @@ def registration(request):
     else:
         registration_form = UserRegistrationForm()
 
-    return render(request, 
+    return render(request,
                   'registration.html',
                   {'registration_form': registration_form})
 

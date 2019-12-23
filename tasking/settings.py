@@ -46,6 +46,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'materializecssform',
+    'accounts.apps.AccountsConfig',
     'tasks.apps.TasksConfig',
 ]
 
