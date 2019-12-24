@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, reverse
 from django.contrib import auth, messages
-# from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group, User
 from accounts.forms import UserLoginForm, UserRegistrationForm
 
@@ -22,11 +22,17 @@ def login(request):
     if request.user.is_authenticated:
         return redirect(reverse('index'))
     if request.method == 'POST':
+        print('\nrequest.POST', request.POST)
         login_form = UserLoginForm(request.POST)
-
+        print('\nLogin form', login_form)
         if login_form.is_valid():
-            user = auth.authenticate(username=request.POST.get('username'),
-                                     password=request.POST.get('password'))
+            print('before user')
+            user = auth.authenticate(
+                request=request,
+                username=request.POST['username_or_email'],
+                password=request.POST['password']
+            )
+            print('after user', user)
             if user:
                 auth.login(user=user, request=request)
                 messages.success(request, 'You are logged in!')
@@ -47,16 +53,24 @@ def registration(request):
 
     if request.method == 'POST':
         registration_form = UserRegistrationForm(request.POST)
-
+        print('\nregistration_form', registration_form)
         if registration_form.is_valid():
             registration_form.save()
-            user = auth.authenticate(username=request.POST['username'],
-                                     password=request.POST['password1'])
+            print('\n\n Saved registration form', request.POST)
+            user = auth.authenticate(
+                request=request,
+                username=request.POST['username'],
+                password=request.POST['password1']
+            )
+            print('\n Before if user', user)
             if user:
+                print('\n Add group')
                 auth.login(user=user, request=request)
+
                 # Add user to free_account permissions group
                 free_account_group = Group.objects.get(name='free_account')
                 free_account_group.user_set.add(user)
+
                 messages.success(request, 'You are registered')
                 return redirect(reverse('index'))
             else:
@@ -69,6 +83,7 @@ def registration(request):
                   {'registration_form': registration_form})
 
 
+@login_required
 def user_profile(request):
     """User's profile Page"""
 

@@ -8,6 +8,7 @@ class UserLoginForm(forms.Form):
     """Form to log users in"""
 
     username_or_email = forms.CharField()
+    print('username or email form', str(username_or_email))
     password = forms.CharField(widget=forms.PasswordInput)
 
 
