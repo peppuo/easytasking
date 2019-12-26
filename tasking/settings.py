@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
-# import django_heroku
 import dj_database_url
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -27,6 +26,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 if os.getenv('DEVELOPMENT') == 'true':
     DEBUG = True
+    SENDGRID_SANDBOX_MODE_IN_DEBUG = False
 else:
     DEBUG = False
 
@@ -146,12 +146,8 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 
 # Alerts and error messages
-MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
+# MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 
-# Email Configuration
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = os.environ.get('EMAIL_ADDRESS')
-EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASSWORD')
-EMAIL_PORT = 587
+# Email Configuration with SendGrid API
+EMAIL_BACKEND = "sendgrid_backend.SendgridBackend"
+SENDGRID_API_KEY = os.environ.get('SENDGRID_API_KEY')
