@@ -1,6 +1,5 @@
-from django.urls import include, path, reverse_lazy
+from django.urls import path
 from accounts.views import logout, login, registration, user_profile
-# from accounts import url_reset
 
 
 urlpatterns = [
@@ -8,5 +7,4 @@ urlpatterns = [
     path('logout/', logout, name='logout'),
     path('register/', registration, name='registration'),
     path('profile/', user_profile, name='profile'),
-# path('password-reset/', include(url_reset)),
 ]
