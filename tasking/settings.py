@@ -110,6 +110,13 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+# Authentication
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'accounts.backends.EmailAuth',
+]
+
+
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
@@ -136,3 +143,15 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # https://devcenter.heroku.com/articles/django-app-configuration
 
 # django_heroku.settings(locals(), databases=False)
+
+
+# Alerts and error messages
+MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
+
+# Email Configuration
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = os.environ.get('EMAIL_ADDRESS')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASSWORD')
+EMAIL_PORT = 587
