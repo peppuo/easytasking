@@ -1,6 +1,13 @@
 from django.shortcuts import render
 
 
-def welcome(request):
-    """Return the base.html file"""
-    return render(request, 'base.html')
+def render_tasks_table(requests):
+    return render(requests, 'tasks_table.html')
+
+
+def render_add_task(requests):
+    pass
+
+
+def render_edit_task(requests):
+    pass
