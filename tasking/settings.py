@@ -31,7 +31,7 @@ else:
 
 
 ALLOWED_HOSTS = [
-    '8080-b12f6158-7641-463e-910d-03093eba3b5e.ws-eu01.gitpod.io',
+    '8080-b1950a7e-647c-4a3f-84e5-91db240a5589.ws-eu01.gitpod.io',
     'fsfd-tasking.herokuapp.com',
 ]
 
