@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Main body-->
+<div class="row">
+    <div class="col s12">
+        <!--Table inside a card-->
+        <div class="card-panel">
+            <div class="row col s12">
+                <h2 class="section-title">Add Task</h2>
+            </div>
+            <form action="" method="post">
+                {% csrf_token %}
+                <ul>
+                  {{ form.as_ul }}
+                </ul>
+                <input type="submit" value="Submit" />
+                
+            </form>
+{% endblock %}
