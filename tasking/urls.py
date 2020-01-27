@@ -16,6 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.shortcuts import render  # TODO remove
+from subscriptions.views import checkout
 
 
 # Just for testing
@@ -27,4 +28,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', render_base, name='base'),
     path('tasks/', include('tasks.urls')),
+    path('subscriptions/', checkout, name='checkout'),
 ]
