@@ -1,45 +1,52 @@
 {% extends 'base.html' %}
-
+<div class="row">
+    <div class="col s12 m8 offset-m2">
+        <div class="card-panel">
+            <form method="POST">
+                <h2 class="section-title">Sign-Up!</h2>
 {% block content %}
-<div class="container">
-  <div class="row justify-content-center">
-    <div class="col-md-4 order-md-2 mb-4">
-        <h4 class="d-flex justify-content-between align-items-center mb-3">
-          <span class="text-muted">Your cart</span>
-          <span class="badge badge-secondary badge-pill">1</span>
-        </h4>
-        <ul class="list-group mb-3">
-          <li class="list-group-item d-flex justify-content-between lh-condensed">
+<div class="row">
+    <div class="col s12 m8 offset-m2">
+        <!-- Card -->
+        <div class="card-panel">
+            <h2 class="section-title">Join Premium!</h2>
+            <h5 class="">Become Premium and start collaborating!</h5>
             <div>
-              <h6 class="my-0">Premium Access</h6>
-              <!-- <small class="text-muted">{{ plan|title }}</small> -->
+                <ul>
+                    <li>
+                        <p> &#10004; Share your Tasks with your colleagues</p>
+                    </li>
+                    <li>
+                        <p> &#10004; Be the Task List owner</p>
+                    </li>
+                    <li>
+                        <p> &#10004; See who is doing what and the progress made</p>
+                    </li>
+                </ul>
             </div>
-          </li>
-          <li class="list-group-item d-flex justify-content-between">
-            <span>Total (EUR)</span>
-            <strong>${{ final_eur }}</strong>
-          </li>
-        </ul>
+            <p>
+                <span>Get a yearly subscription for only </span>
+                <strong>€{{ final_euro }}</strong>
+            </p>
 
-        <div class="text-center pt-3">
-          <form action="{% url 'checkout' %}" method="POST">
-            {% csrf_token %}
-            <script
-                src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-                data-key="{{ stripe_public_key }}"
-                data-amount="{{ price }}"
-                data-name="TASKING"
-                data-description="Premium Access"
-                data-email="{{ user.email }}"
-                data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
-                data-locale="auto">
-            </script>
-          </form>
-        </div>
+            <div class="">
+                <form action="{% url 'checkout' %}" method="POST">
+                    {% csrf_token %}
+                    <script
+                        src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                        data-key="{{ stripe_public_key }}"
+                        data-amount="{{ price }}"
+                        data-name="TASKING"
+                        data-description="Premium Access"
+                        data-email="{{ user.email }}"
+                        data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
+                        data-locale="auto"
+                        data-currency="EUR">
+                    </script>
+                </form>
+            </div>
+        </div> <!-- END Card -->
     </div>
-  </div>
 </div>
-
-
 
 {% endblock %}
