@@ -7,7 +7,8 @@ FAVORITE_COLORS_CHOICES = [
     ('black', 'Black'),
 ]
 
-
+# (importance, category, status, name, duedate, description) specified for Tasks
+# (name, importance, description, category, status, duedate) specified for Tasks
 class TasksForm(forms.Form):
     duedate = forms.DateField(widget=forms.SelectDateWidget)
     category = forms.ChoiceField(
