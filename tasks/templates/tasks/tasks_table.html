@@ -59,7 +59,7 @@
                                 <ul id="dropdown{{ forloop.counter }}" class="dropdown-content" >
                                     <!-- Mark Done Modal Trigger -->
                                     <li><span><a href="#CreateEditStatusModalForm" data-id="{{ task.id }}" class="triggerEditStatusModal">Edit Status</a></span></li>
-                                    <li><span><a href="{% url 'edit_task' %}">Edit Task</a></span></li>
+                                    <li><span><a href="{% url 'update_task' %}">Edit Task</a></span></li>
                                 </ul>
                             </td>
                             <td class="descriptionStyle">{{ task.tsk_description }}</td>
@@ -100,7 +100,7 @@
 </div>
 <!--Floating Button to Add Tasks-->
 <div class="fixed-action-btn">
-    <a class="btn-floating btn-large tooltipped gradient-45deg-light-blue-cyan gradient-shadow" data-position="left" data-tooltip="Click to add Tasks"  href="{% url 'tasks_create' %}">
+    <a class="btn-floating btn-large tooltipped gradient-45deg-light-blue-cyan gradient-shadow" data-position="left" data-tooltip="Click to add Tasks"  href="{% url 'create_task' %}">
         <i class="material-icons">add</i>
     </a>
 </div>

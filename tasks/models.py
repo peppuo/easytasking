@@ -40,18 +40,18 @@ class Status(models.Model):
 
 
 class Tasks(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    tsk_category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    tsk_status = models.ForeignKey(Status, on_delete=models.CASCADE)
-    tsk_importance = models.ForeignKey(Importance, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
+    tsk_category = models.ForeignKey(Category, on_delete=models.CASCADE, default='3')  # default Undefined
+    tsk_status = models.ForeignKey(Status, on_delete=models.CASCADE, default='1')  # default not started
+    tsk_importance = models.ForeignKey(Importance, on_delete=models.CASCADE, default='3')  # default Low
     tsk_name = models.CharField(max_length=200)
-    tsk_description = models.TextField()
-    tsk_due_date = models.DateTimeField(blank=True, null=True)
+    tsk_description = models.TextField(blank=True, null=True)
+    tsk_due_date = models.DateTimeField()
     startdate = models.DateTimeField(blank=True, null=True)
     finishdate = models.DateTimeField(blank=True, null=True)
 
     class Meta:
-        ordering = ['tsk_due_date', ]
+        ordering = ['tsk_due_date',]
         constraints = [
             models.CheckConstraint(
                 check=Q(startdate__lt=F('finishdate')),
@@ -60,4 +60,4 @@ class Tasks(models.Model):
         ]
     
     def __str__(self):
-        return str((self.tsk_name, self.tsk_category, self.tsk_status))
+        return str((self.pk, self.tsk_name))
