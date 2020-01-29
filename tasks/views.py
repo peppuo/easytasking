@@ -1,7 +1,8 @@
+from django.contrib.auth.models import User
 from django.shortcuts import render
 from django.urls import reverse_lazy
 # from django.views.generic.edit import CreateView
-from .models import Tasks, Status
+from .models import Category, Importance, Status, Tasks
 
 
 def tasks_table(requests):
@@ -21,12 +22,18 @@ def tasks_table(requests):
 
 
 def create_task(requests):
-    model = Tasks
-    form = TasksForm()
-    fields = ['name', 'category', 'status', 'description', 'duedate',
-              'importance', ]
+    if requests.method == 'GET':
+        categories = Category.objects.all()
+        importances = Importance.objects.all()
+        status = Status.objects.all()
+        context = {
+            'categories': categories,
+            'importances': importances,
+            'status': status,
+        }
+        return render(requests, 'tasks/create_task.html', context=context)
+    else:
+        pass
 
-
-
-def edit_task(requests):
+def update_task(requests):
     pass
