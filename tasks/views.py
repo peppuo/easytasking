@@ -31,24 +31,34 @@ def create_task(requests):
             'importances': importances,
             'status': status,
         }
-        print(context, 'context')
         return render(requests, 'tasks/create_task.html', context=context)
     else:
-        print('\n REQUESTS', requests)
-        print(requests.POST)
-        print('\n\nDIR', type(requests.POST))
         task = Tasks()
+
         # Required fields
         task.tsk_name = requests.POST['tsk_name']
         task.tsk_due_date = requests.POST['tsk_due_date']
-        # Fields with default values or that can be empty
-        task.tsk_category = Category.objects.filter(pk=requests.POST.get('tsk_category')).first()
+
+        # Fields with default values or values that can be empty
         task.tsk_description = requests.POST.get('tsk_description')
-        task.tsk_importance = Importance.objects.filter(pk=requests.POST.get('tsk_importance')).first()
-        task.tsk_status = Status.objects.filter(pk=requests.POST.get('tsk_status')).first()
-        print('\n\nTASK', task)
+
+        try:
+            task.tsk_category = Category.objects.get(pk=requests.POST['tsk_category'])
+        except:
+            task.tsk_category = Category.objects.get(pk=3)
+        
+        try:
+            task.tsk_importance = Importance.objects.get(pk=requests.POST['tsk_importance'])
+        except:
+            task.tsk_importance = Importance.objects.get(pk=3)
+
+        try:
+            task.tsk_status = Status.objects.get(pk=requests.POST['tsk_status'])
+        except:
+            task.tsk_status = Status.objects.get(pk=1)
+
         task.save()
-        print(Tasks.objects.all())
+
         return redirect(reverse('tasks_table'))
 
 

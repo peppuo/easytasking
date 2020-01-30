@@ -3,8 +3,8 @@ from django.contrib.auth.models import User
 from tasks.models import Tasks
 
 
-class TasksForm(forms.Form):
-    model = Tasks
+# class TasksForm(forms.Form):
+#     model = Tasks
 
 
 # class CreateTaskForm(forms.ModelForm):

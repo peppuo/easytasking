@@ -39,15 +39,15 @@ class Status(models.Model):
         return self.sta_name
 
 
-class Tasks(models.Model):
+class Tasks(models.Model):   
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, blank=True, null=True)
     tsk_category = models.ForeignKey(
-        Category, on_delete=models.CASCADE, default=Category.objects.get(pk=3))  # default Undefined
+        Category, on_delete=models.CASCADE, default=3)  # default Undefined
     tsk_status = models.ForeignKey(
-        Status, on_delete=models.CASCADE, default=Status.objects.get(pk=1))  # default not started
+        Status, on_delete=models.CASCADE, default=1)  # default not started
     tsk_importance = models.ForeignKey(
-        Importance, on_delete=models.CASCADE, default=Importance.objects.get(pk=3))  # default Low
+        Importance, on_delete=models.CASCADE, default=3)  # default Low
     tsk_name = models.CharField(max_length=200)
     tsk_description = models.TextField(blank=True, null=True)
     tsk_due_date = models.DateField()
