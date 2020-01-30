@@ -1,10 +1,8 @@
 from django.contrib.auth.models import User
-from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.urls import reverse, reverse_lazy
 # from django.views.generic.edit import CreateView
-from .models import Category, Importance, Status, Tasks
-
+from tasks.models import Category, Importance, Status, Tasks
 
 
 def tasks_table(requests):
@@ -36,13 +34,22 @@ def create_task(requests):
         print(context, 'context')
         return render(requests, 'tasks/create_task.html', context=context)
     else:
-        print(requests)
+        print('\n REQUESTS', requests)
         print(requests.POST)
-        task = Tasks(requests.POST)
-        print('TASK', task)
-        # task.save()
+        print('\n\nDIR', type(requests.POST))
+        task = Tasks()
+        # Required fields
+        task.tsk_name = requests.POST['tsk_name']
+        task.tsk_due_date = requests.POST['tsk_due_date']
+        # Fields with default values or that can be empty
+        task.tsk_category = Category.objects.filter(pk=requests.POST.get('tsk_category')).first()
+        task.tsk_description = requests.POST.get('tsk_description')
+        task.tsk_importance = Importance.objects.filter(pk=requests.POST.get('tsk_importance')).first()
+        task.tsk_status = Status.objects.filter(pk=requests.POST.get('tsk_status')).first()
+        print('\n\nTASK', task)
+        task.save()
         print(Tasks.objects.all())
-        return HttpResponseRedirect(reverse('tasks_table'))
+        return redirect(reverse('tasks_table'))
 
 
 def update_task(requests):
