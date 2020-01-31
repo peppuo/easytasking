@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
-from django.shortcuts import get_object_or_404,redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse, reverse_lazy
-# from django.views.generic.edit import CreateView
+
 from tasks.models import Category, Importance, Status, Tasks
 
 
@@ -13,12 +13,6 @@ def tasks_table(requests):
         'status': status,
     }
     return render(requests, 'tasks/tasks_table.html', context=context)
-
-
-# class TasksCreate(CreateView):
-#     model = Tasks
-#     fields = '__all__'
-#     success_url = reverse_lazy('')
 
 
 def create_task(requests):
@@ -79,6 +73,18 @@ def update_task(requests, pk):
         task.tsk_description = requests.POST.get('tsk_description')
         task.tsk_category = Category.objects.get(pk=requests.POST['tsk_category'])
         task.tsk_importance = Importance.objects.get(pk=requests.POST['tsk_importance'])
+        task.tsk_status = Status.objects.get(pk=requests.POST['tsk_status'])
+        task.save()
+
+        return redirect(reverse('tasks_table'))
+
+
+def update_status(requests):
+    if requests.method == 'GET':
+        return redirect(reverse('tasks_table'))
+    else:
+        task_id = requests.POST['taskId']
+        task = get_object_or_404(Tasks, pk=task_id)
         task.tsk_status = Status.objects.get(pk=requests.POST['tsk_status'])
         task.save()
 
