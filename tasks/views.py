@@ -80,12 +80,9 @@ def update_task(requests, pk):
 
 
 def update_status(requests):
-    if requests.method == 'GET':
-        return redirect(reverse('tasks_table'))
-    else:
-        task_id = requests.POST['taskId']
-        task = get_object_or_404(Tasks, pk=task_id)
-        task.tsk_status = Status.objects.get(pk=requests.POST['tsk_status'])
-        task.save()
+    task_id = requests.POST['taskId']
+    task = get_object_or_404(Tasks, pk=task_id)
+    task.tsk_status = Status.objects.get(pk=requests.POST['tsk_status'])
+    task.save()
 
-        return redirect(reverse('tasks_table'))
+    return redirect(reverse('tasks_table'))
