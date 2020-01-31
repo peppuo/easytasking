@@ -45,7 +45,7 @@ class Tasks(models.Model):
     tsk_category = models.ForeignKey(
         Category, on_delete=models.CASCADE, default=3)  # default Undefined
     tsk_status = models.ForeignKey(
-        Status, on_delete=models.CASCADE, default=1)  # default not started
+        Status, on_delete=models.CASCADE, default=1)  # default Not started
     tsk_importance = models.ForeignKey(
         Importance, on_delete=models.CASCADE, default=3)  # default Low
     tsk_name = models.CharField(max_length=200)
