@@ -36,8 +36,8 @@
                     <tbody>
                         {% for task in tasks %}
                         <tr>
-                            <td class="taskStyle">{{ task.tsk_name }}</td>
-                            <td class="taskStyle">{{ task.user }}</td>
+                            <td class="taskColStyle">{{ task.tsk_name }}</td>
+                            <td class="userColStyle">{{ task.user }}</td>
                             <td>{{ task.tsk_category }}</td>
                             <td class="textCenter">{{ task.tsk_status }}</td>
                             {% if task.tsk_importance.imp_name == "High" %}

@@ -56,10 +56,15 @@ body
     margin-top: 0;    
 }
 
-.taskStyle
+.taskColStyle
 {
     min-width: 200px;
     padding-right: 1em;
+}
+
+.userColStyle
+{
+    min-width: 100px;
 }
 
 .dateColStyle 
@@ -86,11 +91,6 @@ body
 .textCenter
 {
     text-align: center;
-}
-
-.issueIconStyle
-{
-    color: red;
 }
 
 
