@@ -28,12 +28,8 @@ def create_task(requests):
         return render(requests, 'tasks/create_task.html', context=context)
     else:
         task = Tasks()
-
-        # Required fields
         task.tsk_name = requests.POST['tsk_name']
         task.tsk_due_date = requests.POST['tsk_due_date']
-
-        # Fields with default values or values that can be empty
         task.tsk_description = requests.POST.get('tsk_description')
         try:
             task.tsk_category = Category.objects.get(pk=requests.POST['tsk_category'])
@@ -55,6 +51,7 @@ def create_task(requests):
 
 def update_task(requests, pk):
     if requests.method == 'GET':
+        # TODO user
         task = get_object_or_404(Tasks, pk=pk)
         categories = Category.objects.all()
         importances = Importance.objects.all()
@@ -67,6 +64,7 @@ def update_task(requests, pk):
         }
         return render(requests, 'tasks/update_task.html', context=context)
     else:
+        # TODO user
         task = get_object_or_404(Tasks, pk=pk)
         task.tsk_name = requests.POST['tsk_name']
         task.tsk_due_date = requests.POST['tsk_due_date']
