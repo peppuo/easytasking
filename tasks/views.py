@@ -1,22 +1,24 @@
+from django.contrib import messages
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse, reverse_lazy
 
+from tasks.forms import EditStatusForm, TasksForm
 from tasks.models import Category, Importance, Status, Tasks
 
 
-def tasks_table(requests):
+def tasks_table(request):
     tasks = Tasks.objects.all()
     status = Status.objects.all()
     context = {
         'tasks': tasks,
         'status': status,
     }
-    return render(requests, 'tasks/tasks_table.html', context=context)
+    return render(request, 'tasks/tasks_table.html', context=context)
 
 
-def create_task(requests):
-    if requests.method == 'GET':
+def create_task(request):
+    if request.method == 'GET':
         categories = Category.objects.all()
         importances = Importance.objects.all()
         status = Status.objects.all()
@@ -25,32 +27,26 @@ def create_task(requests):
             'importances': importances,
             'status': status,
         }
-        return render(requests, 'tasks/create_task.html', context=context)
+        return render(request, 'tasks/create_task.html', context=context)
     else:
-        task = Tasks()
-        task.tsk_name = requests.POST['tsk_name']
-        task.tsk_due_date = requests.POST['tsk_due_date']
-        task.tsk_description = requests.POST.get('tsk_description')
-        try:
-            task.tsk_category = Category.objects.get(pk=requests.POST['tsk_category'])
-        except Category.DoesNotExist:
-            task.tsk_category = Category.objects.get(pk=3)
-        try:
-            task.tsk_importance = Importance.objects.get(pk=requests.POST['tsk_importance'])
-        except Importance.DoesNotExist:
-            task.tsk_importance = Importance.objects.get(pk=3)
-        try:
-            task.tsk_status = Status.objects.get(pk=requests.POST['tsk_status'])
-        except Status.DoesNotExist:
-            task.tsk_status = Status.objects.get(pk=1)
-
-        task.save()
+        # TODO toast message
+        task_form = TasksForm(request.POST)
+        if task_form.is_valid():
+            task = Tasks()
+            task.tsk_name = task_form.cleaned_data['tsk_name']
+            task.tsk_name = task_form.cleaned_data['tsk_name']
+            task.tsk_due_date = task_form.cleaned_data['tsk_due_date']
+            task.tsk_description = task_form.cleaned_data['tsk_description']
+            task.tsk_category = task_form.cleaned_data['tsk_category']
+            task.tsk_importance = task_form.cleaned_data['tsk_importance']
+            task.tsk_status = task_form.cleaned_data['tsk_status']
+            task.save()
 
         return redirect(reverse('tasks_table'))
 
 
-def update_task(requests, pk):
-    if requests.method == 'GET':
+def update_task(request, pk):
+    if request.method == 'GET':
         # TODO user
         task = get_object_or_404(Tasks, pk=pk)
         categories = Category.objects.all()
@@ -62,25 +58,31 @@ def update_task(requests, pk):
             'importances': importances,
             'status': status,
         }
-        return render(requests, 'tasks/update_task.html', context=context)
+        return render(request, 'tasks/update_task.html', context=context)
     else:
-        # TODO user
+        # TODO user & toast message
         task = get_object_or_404(Tasks, pk=pk)
-        task.tsk_name = requests.POST['tsk_name']
-        task.tsk_due_date = requests.POST['tsk_due_date']
-        task.tsk_description = requests.POST.get('tsk_description')
-        task.tsk_category = Category.objects.get(pk=requests.POST['tsk_category'])
-        task.tsk_importance = Importance.objects.get(pk=requests.POST['tsk_importance'])
-        task.tsk_status = Status.objects.get(pk=requests.POST['tsk_status'])
-        task.save()
-
+        task_form = TasksForm(request.POST)
+        if task_form.is_valid():
+            task.tsk_name = task_form.cleaned_data['tsk_name']
+            task.tsk_due_date = task_form.cleaned_data['tsk_due_date']
+            task.tsk_description = task_form.cleaned_data['tsk_description']
+            task.tsk_category = task_form.cleaned_data['tsk_category']
+            task.tsk_importance = task_form.cleaned_data['tsk_importance']
+            task.tsk_status = task_form.cleaned_data['tsk_status']
+            task.save()
         return redirect(reverse('tasks_table'))
 
 
-def update_status(requests):
-    task_id = requests.POST['taskId']
+def update_status(request):
+    task_id = request.POST['taskId']
     task = get_object_or_404(Tasks, pk=task_id)
-    task.tsk_status = Status.objects.get(pk=requests.POST['tsk_status'])
-    task.save()
-
+    edit_status_form = EditStatusForm(request.POST)
+    if edit_status_form.is_valid():
+        task.tsk_status = edit_status_form.cleaned_data['tsk_status']
+        task.save()
     return redirect(reverse('tasks_table'))
+    # TODO toast message to confirm or reject?
+    # else:
+    #     messages.error(request, "unable to log you in at this time!")
+
