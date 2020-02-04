@@ -18,22 +18,11 @@ def tasks_table(request):
 
 
 def create_task(request):
-    if request.method == 'GET':
-        categories = Category.objects.all()
-        importances = Importance.objects.all()
-        status = Status.objects.all()
-        context = {
-            'categories': categories,
-            'importances': importances,
-            'status': status,
-        }
-        return render(request, 'tasks/create_task.html', context=context)
-    else:
+    if request.method == 'POST':
         # TODO toast message
         task_form = TasksForm(request.POST)
         if task_form.is_valid():
             task = Tasks()
-            task.tsk_name = task_form.cleaned_data['tsk_name']
             task.tsk_name = task_form.cleaned_data['tsk_name']
             task.tsk_due_date = task_form.cleaned_data['tsk_due_date']
             task.tsk_description = task_form.cleaned_data['tsk_description']
@@ -41,25 +30,24 @@ def create_task(request):
             task.tsk_importance = task_form.cleaned_data['tsk_importance']
             task.tsk_status = task_form.cleaned_data['tsk_status']
             task.save()
+            messages.error(request, 'Task created!')
+            return redirect(reverse('tasks_table'))
+        else:
+            messages.error(request, 'Unable to create task. Please try again.')
 
-        return redirect(reverse('tasks_table'))
+    categories = Category.objects.all()
+    importances = Importance.objects.all()
+    status = Status.objects.all()
+    context = {
+        'categories': categories,
+        'importances': importances,
+        'status': status,
+    }
+    return render(request, 'tasks/create_task.html', context=context)
 
 
 def update_task(request, pk):
-    if request.method == 'GET':
-        # TODO user
-        task = get_object_or_404(Tasks, pk=pk)
-        categories = Category.objects.all()
-        importances = Importance.objects.all()
-        status = Status.objects.all()
-        context = {
-            'task': task,
-            'categories': categories,
-            'importances': importances,
-            'status': status,
-        }
-        return render(request, 'tasks/update_task.html', context=context)
-    else:
+    if request.method == 'POST':
         # TODO user & toast message
         task = get_object_or_404(Tasks, pk=pk)
         task_form = TasksForm(request.POST)
@@ -71,7 +59,23 @@ def update_task(request, pk):
             task.tsk_importance = task_form.cleaned_data['tsk_importance']
             task.tsk_status = task_form.cleaned_data['tsk_status']
             task.save()
-        return redirect(reverse('tasks_table'))
+            print(messages.get_level(request))
+            messages.success(request, 'Task updated')
+            return redirect(reverse('tasks_table'))
+        else:
+            messages.error(request, 'Unable to update. Please try again.')
+    # TODO user
+    task = get_object_or_404(Tasks, pk=pk)
+    categories = Category.objects.all()
+    importances = Importance.objects.all()
+    status = Status.objects.all()
+    context = {
+        'task': task,
+        'categories': categories,
+        'importances': importances,
+        'status': status,
+    }
+    return render(request, 'tasks/update_task.html', context=context)
 
 
 def update_status(request):

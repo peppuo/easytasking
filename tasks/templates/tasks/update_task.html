@@ -61,7 +61,7 @@
                     <div class="row col s12">
                         <div class="input-field col s12">
                             <i class="material-icons prefix">today</i>
-                            <input id="tsk_due_date" name="tsk_due_date" type="text" class="datepicker" value="{{ task.tsk_due_date }}">
+                            <input id="tsk_due_date" name="tsk_due_date" type="text" class="datepicker" value="{{ task.tsk_due_date|date:'M d, Y' }}">
                             <label for="tsk_due_date">Due Date</label>
                         </div>
                     </div>
@@ -100,7 +100,6 @@
                             yearRange: 15,
                             firstDay: 1,
                             showClearBtn: true,
-                            format: "yyyy-mm-dd"
                             };
         $(document).ready(function() {
             $("select").formSelect();

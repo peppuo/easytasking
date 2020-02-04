@@ -6,7 +6,7 @@ from tasks.models import Tasks
 class TasksForm(forms.ModelForm):
     class Meta:
         model = Tasks
-        fields = "__all__"
+        fields = '__all__'
 
 
 class EditStatusForm(forms.ModelForm):

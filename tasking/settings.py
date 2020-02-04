@@ -31,7 +31,6 @@ if os.getenv('DEVELOPMENT') == 'true':
 else:
     DEBUG = False
 
-
 ALLOWED_HOSTS = [
     '8080-b1950a7e-647c-4a3f-84e5-91db240a5589.ws-eu01.gitpod.io',
     'fsfd-tasking.herokuapp.com',
@@ -134,6 +133,10 @@ USE_L10N = False
 DATE_FORMAT = '%b %d, %Y'
 
 USE_TZ = True
+
+
+# Toast Messages
+MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 
 
 # Static files (CSS, JavaScript, Images)
