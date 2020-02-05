@@ -21,12 +21,12 @@ from subscriptions.views import checkout
 
 # Just for testing
 def render_base(requests):
-    return render(requests, 'base.html')
+    return render(requests, 'index.html')
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', render_base, name='base'),
+    path('', render_base, name='index'),
     path('tasks/', include('tasks.urls')),
     path('subscriptions/', checkout, name='checkout'),
 ]

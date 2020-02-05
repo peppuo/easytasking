@@ -24,7 +24,7 @@
         <div class="navbar-fixed">
             <nav>
                 <div class="nav-wrapper teal darken-2">
-                    <a href="" class="brand-logo">TASKING</a>
+                    <a href="{% url 'index' %}" class="brand-logo">TASKING</a>
                     <a href="#" data-target="mobile-nav" class="sidenav-trigger"><i class="material-icons">menu</i></a>
                     <ul id="main-nav" class="right hide-on-med-and-down">
                         {% if user.is_authenticated %}                        
@@ -50,12 +50,9 @@
             </ul>
         </div>
     </header> 
-    <div class="container">
 
-        {% block content %}
-        {% endblock %}
-    
-    </div>
+    {% block content %}
+    {% endblock %}
 
     <!--JavaScript at end of body for optimized loading-->
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -73,13 +70,13 @@
     {% if messages %}
         {% for message in messages %}
             {% if message.tags == 'success' %}
-                <script>M.toast({html: "{{message}}", classes: 'green rounded', displayLength:2000});</script>
+                <script>M.toast({html: "{{ message }}", classes: 'teal darken-1', displayLength:2000});</script>
             {% elif message.tags == 'info' %}
-                <script>M.toast({html: "{{message}}", classes: 'blue rounded', displayLength:2000});</script>
+                <script>M.toast({html: "{{ message }}", classes: 'light-blue darken-3', displayLength:2000});</script>
             {% elif message.tags == 'warning' %}
-                <script>M.toast({html: "{{message}}", classes: 'orange rounded', displayLength:10000});</script>
+                <script>M.toast({html: "{{ message }}", classes: 'orange darken-4', displayLength:10000});</script>
             {% elif message.tags == 'error' %}
-                <script>M.toast({html: "{{message}}", classes: 'red rounded', displayLength:10000});</script>
+                <script>M.toast({html: "{{ message }}", classes: 'deep-orange darken-4', displayLength:10000});</script>
             {% endif %}
         {% endfor %}
     {% endif %}

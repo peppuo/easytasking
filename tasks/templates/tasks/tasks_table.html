@@ -11,98 +11,100 @@
 
 {% block content %}
 <!-- Main body-->
-<div class="row">
-    <div class="col s12">
-        <!--Table inside a card-->
-        <div class="card-panel">
-            <div class="row col s12">
-                <h2 class="section-title">Tasks</h2>
-            </div>
-            <!-- TABLE -->
-            <div class="dataTables_wrapper">
-                <table id="tasksTable" class="highlight compact">
-                    <thead>
-                        <tr>
-                            <th>Task</th>
-                            <th>User</th>
-                            <th>Category</th>
-                            <th class="textRight">Status</th>
-                            <th class="textRight">Importance</th>
-                            <th class="dateColStyle">Due Date</th>
-                            <th></th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for task in tasks %}
-                        <tr>
-                            <td class="taskColStyle">{{ task.tsk_name }}</td>
-                            <td class="userColStyle">{{ task.user }}</td>
-                            <td>{{ task.tsk_category }}</td>
-                            <td class="textCenter">{{ task.tsk_status }}</td>
-                            {% if task.tsk_importance.imp_name == "High" %}
-                                <td class="textCenter" data-sort="{{ task.tsk_importance.imp_order }}"><span class="new badge red" data-badge-caption="">{{ task.tsk_importance }}</span></td>
-                            {% elif task.tsk_importance.imp_name == "Medium" %}
-                                <td class="textCenter" data-sort="{{ task.tsk_importance.imp_order }}"><span class="new badge orange" data-badge-caption="">{{ task.tsk_importance }}</span></td>
-                            {% elif task.tsk_importance.imp_name == "Low" %}
-                                <td class="textCenter" data-sort="{{ task.tsk_importance.imp_order }}"><span class="new badge blue" data-badge-caption="">{{ task.tsk_importance }}</span></td>
-                            {% else %}
-                                <td class="textCenter" data-sort="0"><span class="new badge grey" data-badge-caption="">none</span></td> 
-                            {% endif %}
-                            <td class="dateColStyle">{{ task.tsk_due_date|date:'M d, Y'}}</td>
-                            <td>
-                                <!-- Dropdown Trigger -->
-                                <a class="dropdown-trigger" href="#" data-target="dropdown{{ forloop.counter }}" >
-                                    <i class="material-icons menu-dots">more_vert</i>
-                                </a>
-                                <!-- Dropdown Structure -->
-                                <ul id="dropdown{{ forloop.counter }}" class="dropdown-content" >
-                                    <!-- Modal Trigger -->
-                                    <li><span><a href="#CreateEditStatusModalForm" data-id="{{ task.pk }}" class="triggerEditStatusModal">Edit Status</a></span></li>
-                                    <li><span><a href="{% url 'update_task' task.pk %}">Edit Task</a></span></li>
-                                </ul>
-                            </td>
-                            <td class="descriptionStyle">{{ task.tsk_description }}</td>
-                        </tr>
-                        {% endfor %}
+<div class="container">
+    <div class="row">
+        <div class="col s12">
+            <!--Table inside a card-->
+            <div class="card-panel">
+                <div class="row col s12">
+                    <h2 class="section-title">Tasks</h2>
+                </div>
+                <!-- TABLE -->
+                <div class="dataTables_wrapper">
+                    <table id="tasksTable" class="highlight compact">
+                        <thead>
+                            <tr>
+                                <th>Task</th>
+                                <th>User</th>
+                                <th>Category</th>
+                                <th class="textRight">Status</th>
+                                <th class="textRight">Importance</th>
+                                <th class="dateColStyle">Due Date</th>
+                                <th></th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for task in tasks %}
+                            <tr>
+                                <td class="taskColStyle">{{ task.tsk_name }}</td>
+                                <td class="userColStyle">{{ task.user }}</td>
+                                <td>{{ task.tsk_category }}</td>
+                                <td class="textCenter">{{ task.tsk_status }}</td>
+                                {% if task.tsk_importance.imp_name == "High" %}
+                                    <td class="textCenter" data-sort="{{ task.tsk_importance.imp_order }}"><span class="new badge red" data-badge-caption="">{{ task.tsk_importance }}</span></td>
+                                {% elif task.tsk_importance.imp_name == "Medium" %}
+                                    <td class="textCenter" data-sort="{{ task.tsk_importance.imp_order }}"><span class="new badge orange" data-badge-caption="">{{ task.tsk_importance }}</span></td>
+                                {% elif task.tsk_importance.imp_name == "Low" %}
+                                    <td class="textCenter" data-sort="{{ task.tsk_importance.imp_order }}"><span class="new badge blue" data-badge-caption="">{{ task.tsk_importance }}</span></td>
+                                {% else %}
+                                    <td class="textCenter" data-sort="0"><span class="new badge grey" data-badge-caption="">none</span></td> 
+                                {% endif %}
+                                <td class="dateColStyle">{{ task.tsk_due_date|date:'M d, Y'}}</td>
+                                <td>
+                                    <!-- Dropdown Trigger -->
+                                    <a class="dropdown-trigger" href="#" data-target="dropdown{{ forloop.counter }}" >
+                                        <i class="material-icons menu-dots">more_vert</i>
+                                    </a>
+                                    <!-- Dropdown Structure -->
+                                    <ul id="dropdown{{ forloop.counter }}" class="dropdown-content" >
+                                        <!-- Modal Trigger -->
+                                        <li><a href="#CreateEditStatusModalForm" data-id="{{ task.pk }}" class="triggerEditStatusModal">Edit Status</a></li>
+                                        <li><a href="{% url 'update_task' task.pk %}">Edit Task</a></li>
+                                    </ul>
+                                </td>
+                                <td class="descriptionStyle">{{ task.tsk_description }}</td>
+                            </tr>
+                            {% endfor %}
 
-                        <!-- MODAL -->
-                        <!-- Edit Status Modal Structure -->
-                        <div id="CreateEditStatusModalForm" class="modal">
-                            <div class="modal-content">
-                                <h4>Select Status</h4>
+                            <!-- MODAL -->
+                            <!-- Edit Status Modal Structure -->
+                            <div id="CreateEditStatusModalForm" class="modal">
+                                <div class="modal-content">
+                                    <h4>Select Status</h4>
+                                </div>
+                                <div class="modal-footer">
+                                    <form action="{% url 'update_status' %}" method="POST">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="taskId" id="taskId" value="" /> 
+                                        <div class="col s6">
+                                            <select class="browser-default" id="tsk_status" name="tsk_status" value="">
+                                            <option value="" disabled selected>Choose Status</option>
+                                                {% for sta in status %}
+                                                    <option value="{{ sta.pk }}">{{ sta.sta_name }}</option>                                               
+                                                {% endfor %}
+                                            </select>   
+                                        </div>
+                                        <a class="btn-flat modal-close">Cancel</a>
+                                        <button class="btn modal-action modal-close" type="submit" name="action">Confirm</button>
+                                    </form>
+                                </div>
                             </div>
-                            <div class="modal-footer">
-                                <form action="{% url 'update_status' %}" method="POST">
-                                    {% csrf_token %}
-                                    <input type="hidden" name="taskId" id="taskId" value="" /> 
-                                    <div class="col s6">
-                                        <select class="browser-default" id="tsk_status" name="tsk_status" value="">
-                                          <option value="" disabled selected>Choose Status</option>
-                                            {% for sta in status %}
-                                                <option value="{{ sta.pk }}">{{ sta.sta_name }}</option>                                               
-                                            {% endfor %}
-                                        </select>   
-                                    </div>
-                                    <a class="btn-flat modal-close">Cancel</a>
-                                    <button class="btn modal-action modal-close" type="submit" name="action">Confirm</button>
-                                </form>
-                            </div>
-                        </div>
-                        <!-- END MODAL -->
-                    </tbody>
-                </table>
+                            <!-- END MODAL -->
+                        </tbody>
+                    </table>
+                </div>
+                <!-- END TABLE -->
             </div>
-            <!-- END TABLE -->
+            <!--End table card-->
         </div>
-        <!--End table card-->
     </div>
-</div>
-<!--Floating Button to Add Tasks-->
-<div class="fixed-action-btn">
-    <a class="btn-floating btn-large tooltipped gradient-45deg-light-blue-cyan gradient-shadow" data-position="left" data-tooltip="Click to add Tasks"  href="{% url 'create_task' %}">
-        <i class="material-icons">add</i>
-    </a>
+    <!--Floating Button to Add Tasks-->
+    <div class="fixed-action-btn">
+        <a class="btn-floating btn-large tooltipped gradient-45deg-light-blue-cyan gradient-shadow" data-position="left" data-tooltip="Click to add Tasks"  href="{% url 'create_task' %}">
+            <i class="material-icons">add</i>
+        </a>
+    </div>
 </div>
 {% endblock %} 
 

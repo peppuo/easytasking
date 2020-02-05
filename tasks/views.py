@@ -30,7 +30,7 @@ def create_task(request):
             task.tsk_importance = task_form.cleaned_data['tsk_importance']
             task.tsk_status = task_form.cleaned_data['tsk_status']
             task.save()
-            messages.error(request, 'Task created!')
+            messages.success(request, 'Task created!')
             return redirect(reverse('tasks_table'))
         else:
             messages.error(request, 'Unable to create task. Please try again.')
